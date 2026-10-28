@@ -1,10 +1,390 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/Jyoshna/Desktop/devolps%20dashboard2/index.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Pipeline Dashboard</title>
-    <link rel="stylesheet" href="./DevOps Pipeline Dashboard_files/style.css">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevOps Pipeline Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0b1120;
+    --panel: #151f32;
+    --border: #26344a;
+    --text: #e8eef9;
+    --muted: #8b9bb4;
+    --blue: #5b9cff;
+    --green: #34d399;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.topbar {
+    min-height: 76px;
+    padding: 18px 30px;
+    background: #111a2b;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: #244778;
+    color: #a9ceff;
+    font-size: 25px;
+}
+
+.brand h2 {
+    font-size: 21px;
+}
+
+.brand h2 span {
+    color: var(--blue);
+}
+
+.top-status {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.online {
+    color: var(--green);
+}
+
+.layout {
+    display: flex;
+    min-height: calc(100vh - 76px);
+}
+
+.sidebar {
+    width: 235px;
+    flex-shrink: 0;
+    background: #10192a;
+    border-right: 1px solid var(--border);
+    padding: 25px 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.workspace {
+    color: #6f809b;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin: 0 12px 20px;
+}
+
+.menu {
+    padding: 13px 14px;
+    margin-bottom: 7px;
+    border-radius: 9px;
+    color: #a6b5cb;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.menu b {
+    display: inline-block;
+    width: 27px;
+}
+
+.menu:hover,
+.menu.active {
+    color: #ffffff;
+    background: #244778;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+}
+
+.sidebar-footer strong {
+    background: #284b78;
+    padding: 12px;
+    border-radius: 10px;
+    color: #bcd7ff;
+}
+
+.sidebar-footer small {
+    display: block;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.main {
+    flex: 1;
+    padding: 32px;
+    min-width: 0;
+}
+
+.title {
+    margin-bottom: 28px;
+}
+
+.title h1 {
+    font-size: 29px;
+    margin-bottom: 9px;
+}
+
+.title p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat,
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.stat {
+    padding: 22px;
+}
+
+.stat-icon {
+    width: 39px;
+    height: 39px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #223a5c;
+    color: #9ec7ff;
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+.stat h3 {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 12px;
+}
+
+.number {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 20px;
+}
+
+.panel {
+    padding: 23px;
+    min-width: 0;
+}
+
+.panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.panel-title h2 {
+    font-size: 17px;
+}
+
+.panel-title span {
+    color: var(--green);
+    background: #16382f;
+    border-radius: 20px;
+    padding: 7px 11px;
+    font-size: 11px;
+}
+
+.pipeline-mini {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.mini-stage {
+    flex: 1;
+    min-width: 75px;
+    padding: 17px 8px;
+    border: 1px solid #344763;
+    background: #111b2d;
+    border-radius: 11px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.mini-stage b {
+    display: block;
+    color: var(--blue);
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.mini-stage small {
+    display: block;
+    margin-top: 9px;
+    color: var(--green);
+    font-size: 10px;
+}
+
+.arrow {
+    color: var(--blue);
+    font-size: 20px;
+}
+
+.activity {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.activity:last-child {
+    border-bottom: none;
+}
+
+.activity b {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.activity p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.page-message {
+    display: none;
+    margin-top: 20px;
+    padding: 25px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    line-height: 1.8;
+}
+
+.page-message h2 {
+    margin-bottom: 12px;
+}
+
+@media (max-width: 1000px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .topbar {
+        padding: 16px;
+    }
+
+    .brand h2 {
+        font-size: 17px;
+    }
+
+    .layout {
+        display: block;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 13px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .workspace,
+    .sidebar-footer {
+        display: none;
+    }
+
+    .sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+    }
+
+    .menu {
+        margin: 0;
+        padding: 12px 8px;
+    }
+
+    .main {
+        padding: 20px 14px;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .stat {
+        padding: 16px;
+    }
+
+    .number {
+        font-size: 25px;
+    }
+
+    .pipeline-mini {
+        gap: 8px;
+    }
+
+    .arrow {
+        display: none;
+    }
+
+    .mini-stage {
+        flex: 1 1 40%;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -16,49 +396,24 @@
     </div>
 
     <div class="top-status">
-        <span>7 Sept 2026 | 22:41</span>
-        <span class="online">● System Online</span>
+        <span id="currentDate">System Monitoring</span>
+        <span class="online">● Dashboard Available</span>
     </div>
 </header>
-
 
 <div class="layout">
 
     <aside class="sidebar">
-
         <p class="workspace">WORKSPACE</p>
 
-        <div class="menu active" data-page="dashboard">
-            <b>⌂</b> Dashboard
-        </div>
-
-        <div class="menu" data-page="pipeline">
-            <b>♧</b> Pipeline
-        </div>
-
-        <div class="menu" data-page="builds">
-            <b>▤</b> Builds
-        </div>
-
-        <div class="menu" data-page="deployments">
-            <b>☁</b> Deployments
-        </div>
-
-        <div class="menu" data-page="iot">
-            <b>◉</b> IoT Devices
-        </div>
-
-        <div class="menu" data-page="logs">
-            <b>▣</b> Logs
-        </div>
-
-        <div class="menu" data-page="reports">
-            <b>▥</b> Reports
-        </div>
-
-        <div class="menu" data-page="settings">
-            <b>⚙</b> Settings
-        </div>
+        <div class="menu active" data-page="dashboard"><b>⌂</b> Dashboard</div>
+        <div class="menu" data-page="pipeline"><b>♧</b> Pipeline</div>
+        <div class="menu" data-page="builds"><b>▤</b> Builds</div>
+        <div class="menu" data-page="deployments"><b>☁</b> Deployments</div>
+        <div class="menu" data-page="iot"><b>◉</b> IoT Devices</div>
+        <div class="menu" data-page="logs"><b>▣</b> Logs</div>
+        <div class="menu" data-page="reports"><b>▥</b> Reports</div>
+        <div class="menu" data-page="settings"><b>⚙</b> Settings</div>
 
         <div class="sidebar-footer">
             <strong>DP</strong>
@@ -67,122 +422,147 @@
                 <small>Project Workspace</small>
             </div>
         </div>
-
     </aside>
 
-
     <main class="main">
+        <div id="dashboardPage">
+            <div class="title">
+                <h1>Dashboard</h1>
+                <p>DevOps Pipeline overview and system monitoring</p>
+            </div>
 
-        <div class="title">
-            <h1>Dashboard</h1>
-            <p>DevOps Pipeline overview and system monitoring</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-icon">⚙</div>
+                    <h3>Total Builds</h3>
+                    <div class="number">104</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-icon">✓</div>
+                    <h3>Success Rate</h3>
+                    <div class="number">96%</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-icon">!</div>
+                    <h3>Failed Builds</h3>
+                    <div class="number">4</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-icon">◉</div>
+                    <h3>IoT Devices</h3>
+                    <div class="number">1</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="panel">
+                    <div class="panel-title">
+                        <h2>Pipeline Overview</h2>
+                        <span>● Active</span>
+                    </div>
+
+                    <div class="pipeline-mini">
+                        <div class="mini-stage">
+                            <b>⌂</b>GitHub
+                            <small>Connected</small>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <div class="mini-stage">
+                            <b>♧</b>Pipeline
+                            <small>Running</small>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <div class="mini-stage">
+                            <b>⚙</b>Build
+                            <small>Passed</small>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <div class="mini-stage">
+                            <b>◉</b>ESP32
+                            <small>Online</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-title">
+                        <h2>Recent Activity</h2>
+                        <span>Demo Data</span>
+                    </div>
+
+                    <div class="activity">
+                        <b>Build #104 completed</b>
+                        <p>Successful · 2 minutes ago</p>
+                    </div>
+
+                    <div class="activity">
+                        <b>Deployment completed</b>
+                        <p>Production updated · 8 minutes ago</p>
+                    </div>
+
+                    <div class="activity">
+                        <b>ESP32 connected</b>
+                        <p>Device online · 12 minutes ago</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="stats">
-
-            <div class="stat">
-                <div class="stat-icon">⚙</div>
-                <h3>Total Builds</h3>
-                <div class="number">104</div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-icon">✓</div>
-                <h3>Success Rate</h3>
-                <div class="number">96%</div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-icon">!</div>
-                <h3>Failed Builds</h3>
-                <div class="number">4</div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-icon">◉</div>
-                <h3>IoT Devices</h3>
-                <div class="number">1</div>
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-grid">
-
-            <div class="panel">
-
-                <div class="panel-title">
-                    <h2>Pipeline Overview</h2>
-                    <span>● Active</span>
-                </div>
-
-                <div class="pipeline-mini">
-
-                    <div class="mini-stage">
-                        <b>⌂</b>
-                        GitHub
-                        <small>Connected</small>
-                    </div>
-
-                    <div class="arrow">→</div>
-
-                    <div class="mini-stage">
-                        <b>♧</b>
-                        Pipeline
-                        <small>Running</small>
-                    </div>
-
-                    <div class="arrow">→</div>
-
-                    <div class="mini-stage">
-                        <b>⚙</b>
-                        Build
-                        <small>Passed</small>
-                    </div>
-
-                    <div class="arrow">→</div>
-
-                    <div class="mini-stage">
-                        <b>◉</b>
-                        ESP32
-                        <small>Online</small>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel">
-
-                <div class="panel-title">
-                    <h2>Recent Activity</h2>
-                    <span>Today</span>
-                </div>
-
-                <div class="activity">
-                    <b>Build #104 completed</b>
-                    <p>Successful · 2 minutes ago</p>
-                </div>
-
-                <div class="activity">
-                    <b>Deployment completed</b>
-                    <p>Production updated · 8 minutes ago</p>
-                </div>
-
-                <div class="activity">
-                    <b>ESP32 connected</b>
-                    <p>Device online · 12 minutes ago</p>
-                </div>
-
-            </div>
-
+        <div class="page-message" id="otherPage">
+            <h2 id="pageHeading"></h2>
+            <p id="pageDescription"></p>
         </div>
     </main>
-
 </div>
 
-<script src="./DevOps Pipeline Dashboard_files/script.js"></script>
+<script>
+const dateElement = document.getElementById("currentDate");
+dateElement.textContent = new Date().toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short"
+});
 
+const pageContent = {
+    dashboard: ["Dashboard", "DevOps Pipeline overview and system monitoring."],
+    pipeline: ["Pipeline", "Pipeline stages: GitHub → Pipeline → Build → ESP32."],
+    builds: ["Builds", "Total builds: 104. Success rate: 96%. Failed builds: 4. These are sample values."],
+    deployments: ["Deployments", "Deployment overview. Connect a real deployment service for live status."],
+    iot: ["IoT Devices", "Registered sample device: ESP32. Connect a device API to display live readings."],
+    logs: ["Logs", "Build and deployment logs can be displayed here after connecting a backend."],
+    reports: ["Reports", "Project summary: 104 sample builds, 96% sample success rate, and 4 sample failed builds."],
+    settings: ["Settings", "This is a static demo dashboard. Live data and settings require backend integration."]
+};
 
-</body></html>
+document.querySelectorAll(".menu").forEach(menu => {
+    menu.addEventListener("click", () => {
+        document.querySelectorAll(".menu").forEach(item => item.classList.remove("active"));
+        menu.classList.add("active");
+
+        const page = menu.dataset.page;
+        const dashboard = document.getElementById("dashboardPage");
+        const other = document.getElementById("otherPage");
+
+        if (page === "dashboard") {
+            dashboard.style.display = "block";
+            other.style.display = "none";
+        } else {
+            dashboard.style.display = "none";
+            other.style.display = "block";
+            document.getElementById("pageHeading").textContent = pageContent[page][0];
+            document.getElementById("pageDescription").textContent = pageContent[page][1];
+        }
+    });
+});
+</script>
+
+</body>
+</html>
